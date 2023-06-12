@@ -18,11 +18,12 @@ classifiers = [
 keywords = ["sorter", "qrcode", "docmentsorter"]
 dependencies = [
         "PyMuPDF",
-        "pillow",
+        "Pillow",
         "qrcode",
         "tqdm",
         "pyzbar",
-        "termcolor"
+        "termcolor",
+        "typing_extensions"
 ]
 requires-python = ">=3.7"
 [project.optional-dependencies]
