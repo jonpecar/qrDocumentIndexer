@@ -34,7 +34,8 @@ def test_pdf_qr_insert_has_expected_values(tmp_path : pathlib.Path):
     shutil.copyfile(INGEST_DOC_PATH, temp_filepath)
 
     ingest = PDFIngest(temp_filepath)
-    ingest.insert_qr_codes(QR_POSITION.TOP_LEFT)
+    for _ in ingest.insert_qr_codes(QR_POSITION.TOP_LEFT):
+        pass
 
     doc = fitz.Document(temp_filepath)
 

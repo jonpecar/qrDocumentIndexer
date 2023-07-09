@@ -106,4 +106,6 @@ class PDFIngest:
                 qr_image.save(output, format="PNG")
                 page.insert_image(qr_rect, stream=output)
 
+            yield
+
         self.doc.save(self.filepath, incremental=True, encryption=0)

@@ -28,12 +28,19 @@ def main():
         return
     else:
         while True:
-            filenames = input("Paste filepath and hit enter to insert QR codes into a file. Hit enter with no filepath to close:")
+            filenames = input("Paste filepath and hit enter to insert QR codes into a file. Hit enter with no filepath to close:\n\t")
             if filenames.strip() == '':
                 print("\tNo filepath found. Terminating.")
                 return
             filepath = filenames.strip('"\'& ')
+            _, ext = os.path.splitext(filepath)
+            if not ext.lower() == '.pdf':
+                text = colored(f'\tFilepath "{filepath}" does not appear to be a PDF. This tool only supports PDF at this time.', 'red')
+                print(text)
+                continue
+
             print(f'\tAttempting to load file: {filepath}')
+
             if not os.path.isfile(filepath):
                 text = colored(f'\tFilepath "{filepath}" could not be found. Please ensure you are providing a valid filepath.', 'red')
                 print(text)
@@ -41,7 +48,8 @@ def main():
             try:
                 ingester = PDFIngest(filepath)
                 print(f'\tSuccessfully loaded file. Found {len(ingester.page_metadata)} pages. Attempting to insert QR codes.')
-                ingester.insert_qr_codes(args.position, True, args.offset, args.size)
+                for _ in ingester.insert_qr_codes(args.position, True, args.offset, args.size):
+                    pass
                 text = colored(f'\tSuccessfully inserted QR codes for file: "{filepath}"', 'green')
                 print(text)
             except Exception as ex:
