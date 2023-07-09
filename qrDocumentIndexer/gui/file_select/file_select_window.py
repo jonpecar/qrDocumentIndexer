@@ -1,12 +1,17 @@
 from typing import Type
 
 import tkinter as tk
+from tkinter import filedialog
 import customtkinter as ctk
+
+from .file_list import FileListFrame
+from .action_handler import ActionHandler
 
 class FileSelectWindow(ctk.CTkToplevel):
     def __init__(self, master, title: str, 
                     action_button_text: str, 
                     options_frame: Type[ctk.CTkFrame],
+                    action_handler: Type[ActionHandler],
                     *args, **kwargs):
         ctk.CTkToplevel.__init__(self, master, *args, **kwargs)
         self.geometry("1200x800")
@@ -25,15 +30,26 @@ class FileSelectWindow(ctk.CTkToplevel):
             self.options_frame = options_frame(self)
             self.options_frame.pack(side=tk.TOP, fill=tk.X)
         
+        self.file_list = FileListFrame(self, height=2000)
+        self.file_list.pack(fill=tk.BOTH)
+
+        self.action_handler = action_handler
 
     def _select_files_clicked(self):
-        print("Select files")
-        pass
+        files = filedialog.askopenfilenames(defaultextension= '.pdf',
+                                        filetypes=[['PDF Files','*.pdf']],
+                                        title= 'Select Files to Stamp with PDF')
+        for file in files:
+            self.file_list.add_file(file)
 
     def _action_button_clicked(self):
+        options = None
         try:
             options = self.options_frame.options
-            print(options)
+            print(f"Loaded options: {options}")
         except:
-            print("No options")
+            print("No options found")
+
+        handler = self.action_handler()
+        handler.process_files(self.file_list, options)
         pass

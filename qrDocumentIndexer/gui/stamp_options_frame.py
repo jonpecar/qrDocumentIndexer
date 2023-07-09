@@ -2,8 +2,9 @@ import tkinter as tk
 import customtkinter as ctk
 
 from ..pdf_ingest import QR_POSITION
+from .file_select.options_frame import Options
 
-class StampOptions:
+class StampOptions(Options):
     def __init__(self,
                  position: QR_POSITION,
                  size: int,
