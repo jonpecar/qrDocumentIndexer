@@ -15,10 +15,10 @@ class _PDFBookmark:
         self.heirarchy: list(str) = [self.title]
 
 class QR_POSITION(Enum):
-    TOP_LEFT = "top_left"
-    TOP_RIGHT = "top_right"
-    BOTTOM_LEFT = "bottom_left"
-    BOTTOM_RIGHT = "bottom_right"
+    TOP_LEFT = "Top Left"
+    TOP_RIGHT = "Top Right"
+    BOTTOM_LEFT = "Bottom Left"
+    BOTTOM_RIGHT = "Bottom Right"
 
     def __str__(self):
         return self.value

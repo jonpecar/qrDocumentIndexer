@@ -23,7 +23,8 @@ dependencies = [
         "tqdm",
         "pyzbar",
         "termcolor",
-        "typing_extensions"
+        "typing_extensions",
+        "customtkinter"
 ]
 requires-python = ">=3.7"
 [project.optional-dependencies]
