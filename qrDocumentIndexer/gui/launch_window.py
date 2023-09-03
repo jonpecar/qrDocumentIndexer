@@ -4,6 +4,7 @@ from .stamp_options_frame import StampOptionsFrame
 from .stamp_action_handler import StampActionHandler
 
 ADD_PDF_TITLE = 'Add QR Codes to PDFs'
+SORT_SCANNED_DOCS_TITLE = 'Sort Scanned Documents'
 
 
 class LaunchWindow(ctk.CTkFrame):
@@ -11,10 +12,10 @@ class LaunchWindow(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, parent, *args, **kwargs)
         self.parent = parent
 
-        self.generate_button = ctk.CTkButton(master=self, text=ADD_PDF_TITLE, command=self.click_stamp_docs)
-        self.generate_button.pack(fill='both', side='top', expand=True)
-        # self.sort_button = ctk.CTkButton(master=self, text='Sort Images', command=self.click_sort_button)
-        # self.sort_button.pack(fill='both', side='bottom', expand=True)
+        self.add_qrs_to_pdf_button = ctk.CTkButton(master=self, text=ADD_PDF_TITLE, command=self.click_stamp_docs)
+        self.add_qrs_to_pdf_button.pack(fill='both', side='top', expand=True)
+        self.sort_scanned_docs_button = ctk.CTkButton(master=self, text=SORT_SCANNED_DOCS_TITLE, command=self.click_sort_button)
+        self.sort_scanned_docs_button.pack(fill='both', side='bottom', expand=True)
 
         self.pack(side='top', fill='both', expand=True)
 

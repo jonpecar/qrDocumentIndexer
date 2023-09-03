@@ -4,7 +4,8 @@ import shutil
 import io
 
 import fitz
-from pyzbar.pyzbar import decode, ZBarSymbol
+import numpy
+from qreader import QReader
 from PIL import Image
 
 from qrDocumentIndexer.pdf_ingest import PDFIngest, QR_POSITION
@@ -41,13 +42,15 @@ def test_pdf_qr_insert_has_expected_values(tmp_path : pathlib.Path):
 
     found_qrs = []
 
+    qreader = QReader()
+
     for page in doc:
         pix: fitz.Pixmap = page.get_pixmap(dpi=300)
         img = Image.frombytes('RGB', [pix.width, pix.height], pix.samples)
         temp_image = tmp_path / 'image.png'
         img.save(temp_image)
-        result = decode(img, symbols = [ZBarSymbol.QRCODE])
-        str_data :str = result[0].data.decode('utf-8')
+        result = qreader.detect_and_decode(numpy.array(img))
+        str_data :str = result[0]
         found_page_info = PageInfo.fromJson(str_data)
         found_qrs.append(found_page_info)
 

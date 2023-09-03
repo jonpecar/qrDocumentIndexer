@@ -21,7 +21,7 @@ dependencies = [
         "Pillow",
         "qrcode",
         "tqdm",
-        "pyzbar",
+        "qreader",
         "termcolor",
         "typing_extensions",
         "customtkinter"
