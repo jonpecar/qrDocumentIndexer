@@ -3,7 +3,7 @@ import os
 from PIL import Image
 from qrDocumentIndexer.page_info import PageInfo
 from qrDocumentIndexer.scanned_page import ScannedPage
-from fitz import fitz, Document
+from fitz import Document
 
 EXPECTED_PAGEINFO = PageInfo('test_ingest.pdf', 1, ["Bookmark 1"])
 
