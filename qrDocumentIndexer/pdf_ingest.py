@@ -34,9 +34,7 @@ class PDFIngest:
 
         # Get all bookmarks. Remove bookmarks that don't point to a page
         bookmarks = [_PDFBookmark(bookmark) for bookmark in self.doc.get_toc(True)]
-        non_page_bookmarks = [bookmark for bookmark in bookmarks if bookmark.page <= 0]
-        for bookmark in non_page_bookmarks:
-            bookmarks.remove(bookmark)
+        bookmarks = [bookmark for bookmark in bookmarks if bookmark.page > 0]
 
 
         # Build up bookmark heirarchy for each page
