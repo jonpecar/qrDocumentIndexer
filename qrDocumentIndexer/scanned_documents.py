@@ -1,4 +1,4 @@
-from os.path import splitext, isfile
+from os.path import splitext, isfile, join
 
 import fitz
 from PIL import Image
@@ -22,7 +22,7 @@ class ScannedDocuments:
         if ext.lower() == '.pdf':
             pdf = fitz.Document(document_path)
             for page in pdf:
-                self._pages.append(ScannedPage(page))
+                self._pages.append(ScannedPage(page, pdf))
             self._loaded_files[document_path] = pdf
         else:
             image = Image.open(document_path)

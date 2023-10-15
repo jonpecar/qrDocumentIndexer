@@ -1,3 +1,5 @@
+from fitz import Document
+
 from qrDocumentIndexer.page_info import PageInfo
 from qrDocumentIndexer.scanned_page import ScannedPage
 
@@ -8,6 +10,11 @@ class BlankPage(ScannedPage):
     @property
     def page_info(self) -> PageInfo:
         return PageInfo(None, 0, [])
+    
+    def add_to_document(self, doc: Document):
+        doc.new_page(-1, # insertion point: end of document
+            width = 595, # page dimension: A4 portrait
+            height = 842)
 
 BLANK_PAGE = BlankPage()
 
@@ -45,3 +52,8 @@ class ReconstitutedDocument():
 
         self._ordered_pages = sorted_pages
     
+    def save_document(self, filepath: str):
+        doc = Document(filepath)
+        for page in self.sorted_pages:
+            page.add_to_document(doc)
+        doc.save()

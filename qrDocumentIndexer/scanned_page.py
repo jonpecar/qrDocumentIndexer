@@ -1,16 +1,17 @@
 from PIL.Image import Image
-from fitz.fitz import Page, Pixmap
+from fitz.fitz import Page, Pixmap, Document, Matrix
 from qreader import QReader
 import numpy as np
 
 from qrDocumentIndexer.page_info import PageInfo
 
 class ScannedPage:
-    def __init__(self, page: Image | Page) -> None:
+    def __init__(self, page: Image | Page, src_doc: Document = None) -> None:
         if isinstance(page, Image):
             self._image = page
         elif isinstance(page, Page):
             self._pdf_page = page
+            self._src_doc = src_doc
         else:
             raise TypeError('Page type is not valid')
     
@@ -21,7 +22,8 @@ class ScannedPage:
             pix_array = np.array(self._image.convert("RGB"))
             results = qreader.detect_and_decode(pix_array)
         elif hasattr(self, '_pdf_page') and self._pdf_page:
-            image: Pixmap = self._pdf_page.get_pixmap()
+            mat = Matrix(5, 5)
+            image: Pixmap = self._pdf_page.get_pixmap(matrix = mat)
             pix_array = np.frombuffer(buffer=image.samples, dtype=np.uint8).reshape((image.height, image.width, -1))
             results = qreader.detect_and_decode(pix_array)
 
@@ -42,3 +44,10 @@ class ScannedPage:
             self._scan_page_info()
 
         return self._page_info
+    
+    def add_to_document(self, doc: Document):
+        if hasattr(self, '_image'):
+            im_doc = Document(self._image)
+            doc.insert_pdf(im_doc, 0, 0)
+        elif hasattr(self, '_pdf_page'):
+            doc.insert_pdf(self._src_doc, self._pdf_page.number, self._pdf_page.number)
