@@ -51,9 +51,31 @@ class ReconstitutedDocument():
             page_nos = [x.page_info.page_no for x in sorted_pages]
 
         self._ordered_pages = sorted_pages
-    
+
+    @property
+    def _sorted_toc(self):
+        toc = []
+        for i, page in enumerate(self.sorted_pages):
+            for j, bookmark in enumerate(page.page_info.bookmarks):
+                last_at_level = ReconstitutedDocument.__get_last_toc_at_level(toc, j + 1)
+                if last_at_level != bookmark:
+                    toc.append([j + 1, bookmark, i + 1]) # TOC is [level, title, page number]
+        
+        return toc
+
+    def __get_last_toc_at_level(toc: list, level: int) -> str:
+        toc_rev = toc[::-1]
+        for entry in toc_rev:
+            if entry[0] < level:
+                return None # We have alredy hit a higher level bookmark
+            elif entry[0] == level:
+                return entry[1]
+        return None
+
+
     def save_document(self, filepath: str):
-        doc = Document(filepath)
+        doc = Document()
         for page in self.sorted_pages:
             page.add_to_document(doc)
-        doc.save()
+        doc.set_toc(self._sorted_toc)
+        doc.save(filepath)

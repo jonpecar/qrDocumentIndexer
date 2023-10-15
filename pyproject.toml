@@ -24,7 +24,8 @@ dependencies = [
         "qreader",
         "termcolor",
         "typing_extensions",
-        "customtkinter"
+        "customtkinter",
+        "CTkMessageBox"
 ]
 requires-python = ">=3.7"
 [project.optional-dependencies]

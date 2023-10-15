@@ -22,11 +22,11 @@ class ScannedDocuments:
         if ext.lower() == '.pdf':
             pdf = fitz.Document(document_path)
             for page in pdf:
-                self._pages.append(ScannedPage(page, pdf))
+                self._pages.append(ScannedPage(page, src_doc=pdf))
             self._loaded_files[document_path] = pdf
         else:
             image = Image.open(document_path)
-            self._pages.append(ScannedPage(image))
+            self._pages.append(ScannedPage(image, src_image=document_path))
             self._loaded_files[document_path] = image
 
     @property

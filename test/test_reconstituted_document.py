@@ -123,16 +123,28 @@ def test_blanks_inserted_for_first_page():
         pages[0],
     ]
 
-def test_full_reconstruction():
-    docs = ScannedDocuments()
-    for file in os.listdir(INGEST_DOC_PATH):
-        docs.add_document(os.path.join(INGEST_DOC_PATH, file))
+def test_build_toc():
+    im = Image.Image()
 
-    reco_docs: list[ReconstitutedDocument] = []
+    pages = [
+        ScannedPage(im),
+        ScannedPage(im),
+        ScannedPage(im),
+        ScannedPage(im),
+    ]
 
-    for filename, pages in docs.pages_by_output_doc.items():
-        reco_docs.append(ReconstitutedDocument(pages, filename))
+    pages[0]._page_info = PageInfo(FILENAME, 1, ['Bookmark 1'])
+    pages[1]._page_info = PageInfo(FILENAME, 2, [])
+    pages[2]._page_info = PageInfo(FILENAME, 3, ['Bookmark 1', 'Sub Bookmark'])
+    pages[3]._page_info = PageInfo(FILENAME, 4, ['Bookmark 2', 'Sub Bookmark 2'])
 
-    assert len(reco_docs) == 1
+    expected_toc = [
+        [1, 'Bookmark 1', 1],
+        [2, 'Sub Bookmark', 3],
+        [1, 'Bookmark 2', 4],
+        [2, 'Sub Bookmark 2', 4]
+    ]
 
-    ## Save file & compare QRs in output to expected & check bookmarks
+    doc = ReconstitutedDocument(pages, FILENAME)
+
+    assert doc._sorted_toc == expected_toc

@@ -1,3 +1,5 @@
+from CTkMessagebox import ctkmessagebox
+
 from .file_select.action_handler import ActionHandler
 from .file_select.file_list import FileListFrame
 from .stamp_options_frame import StampOptions
@@ -13,3 +15,4 @@ class StampActionHandler(ActionHandler):
                                      qr_pos_offset=options.offset,
                                      qr_size_multi=float(options.size)/100.0):
                 pass
+        ctkmessagebox.CTkMessagebox(title="Done", message="Processing done.")

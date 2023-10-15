@@ -6,9 +6,12 @@ import numpy as np
 from qrDocumentIndexer.page_info import PageInfo
 
 class ScannedPage:
-    def __init__(self, page: Image | Page, src_doc: Document = None) -> None:
+    def __init__(self, page: Image | Page, 
+                 src_doc: Document = None, 
+                 src_image: str = None) -> None:
         if isinstance(page, Image):
             self._image = page
+            self._src_image = src_image
         elif isinstance(page, Page):
             self._pdf_page = page
             self._src_doc = src_doc
@@ -47,7 +50,8 @@ class ScannedPage:
     
     def add_to_document(self, doc: Document):
         if hasattr(self, '_image'):
-            im_doc = Document(self._image)
-            doc.insert_pdf(im_doc, 0, 0)
+            im_doc = Document(self._src_image)
+            im_doc_pdf = Document("pdf", im_doc.convert_to_pdf())
+            doc.insert_pdf(im_doc_pdf, 0, 0)
         elif hasattr(self, '_pdf_page'):
             doc.insert_pdf(self._src_doc, self._pdf_page.number, self._pdf_page.number)
