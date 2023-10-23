@@ -12,6 +12,8 @@ class FileSelectWindow(ctk.CTkToplevel):
                     action_button_text: str, 
                     options_frame: Type[ctk.CTkFrame],
                     action_handler: Type[ActionHandler],
+                    default_extension: str = '.pdf',
+                    filetypes: list = [['PDF Files','*.pdf']],
                     *args, **kwargs):
         ctk.CTkToplevel.__init__(self, master, *args, **kwargs)
         self.geometry("1200x800")
@@ -35,9 +37,12 @@ class FileSelectWindow(ctk.CTkToplevel):
 
         self.action_handler = action_handler
 
+        self._file_types = filetypes
+        self._default_extension = default_extension
+
     def _select_files_clicked(self):
-        files = filedialog.askopenfilenames(defaultextension= '.pdf',
-                                        filetypes=[['PDF Files','*.pdf']],
+        files = filedialog.askopenfilenames(defaultextension= self._default_extension,
+                                        filetypes=self._file_types,
                                         title= 'Select Files to Stamp with PDF')
         for file in files:
             self.file_list.add_file(file)

@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qrDocumentIndexer"
-version = "0.0.1"
+version = "0.1.0"
 description = "Tool for indexing and sorting documents using QR codes"
 readme = "README.md"
 authors = [{name = "Jonathan Pecar", email = "jonathan.pecar@gmail.com"}]
@@ -21,19 +21,20 @@ dependencies = [
         "Pillow",
         "qrcode",
         "tqdm",
-        "pyzbar",
+        "qreader",
         "termcolor",
         "typing_extensions",
-        "customtkinter"
+        "customtkinter",
+        "CTkMessageBox"
 ]
-requires-python = ">=3.7"
+requires-python = ">=3.10"
 [project.optional-dependencies]
 dev = ["pytest", "bumpver", "setuptools"]
 
 [project.urls]
 Homepage = "https://github.com/jonpecar/qrDocumentIndexer"
 [tool.bumpver]
-current_version = "0.0.1"
+current_version = "0.1.0"
 version_pattern = "MAJOR.MINOR.PATCH"
 commit_message = "bump version {old_version} -> {new_version}"
 commit = true
