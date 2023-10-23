@@ -37,7 +37,9 @@ What is missing:
 ## How to install
 
 Install with the following command:
-
+```
+pip install qrDocumentIndexer
+```
 
 ### ZBar
 
